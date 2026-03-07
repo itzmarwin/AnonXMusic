@@ -9,7 +9,7 @@ import re
 import aiohttp
 from pathlib import Path
 
-from youtubesearchpython.__future__ import VideosSearch, Playlist
+from py_yt import VideosSearch, Playlist
 
 from anony import logger
 from anony.helpers import Track, utils
