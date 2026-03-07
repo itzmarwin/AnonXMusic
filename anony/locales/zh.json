@@ -1,5 +1,6 @@
 {
     "add_me": "将我添加到您的群组",
+    "add_me_short": "Add Me",
     "admin_required": "机器人需要<b>通过链接邀请用户</b>的权限才能工作。",
     "admin_cache_wait": "您每 10 分钟只能刷新一次管理员缓存。",
     "admin_cache_reloading": "正在重新加载管理员缓存...",
