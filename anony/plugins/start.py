@@ -2,10 +2,14 @@
 # Licensed under the MIT License.
 # This file is part of AnonXMusic
 
+
+import time
 import asyncio
+
+import psutil
 from pyrogram import enums, filters, types
 
-from anony import app, config, db, lang
+from anony import app, boot, config, db, lang
 from anony.helpers import buttons, utils
 
 
@@ -29,11 +33,23 @@ async def start(_, message: types.Message):
         return await _help(_, message)
 
     private = message.chat.type == enums.ChatType.PRIVATE
-    _text = (
-        message.lang["start_pm"].format(message.from_user.first_name, app.name)
-        if private
-        else message.lang["start_gp"].format(app.name)
-    )
+
+    if private:
+        get_time = lambda s: (lambda r: (f"{r[-1]}, " if r[-1][:-4] != "0" else "") + ":".join(reversed(r[:-1])))([f"{v}{u}" for v, u in zip([s%60, (s//60)%60, (s//3600)%24, s//86400], ["s", "m", "h", "days"])])
+        uptime = get_time(int(time.time() - boot))
+        cpu = psutil.cpu_percent(interval=0)
+        ram = psutil.virtual_memory().percent
+        storage = psutil.disk_usage("/").percent
+        _text = message.lang["start_pm"].format(
+            message.from_user.first_name,
+            app.name,
+            uptime,
+            storage,
+            cpu,
+            ram,
+        )
+    else:
+        _text = message.lang["start_gp"].format(app.name)
 
     key = buttons.start_key(message.lang, private)
     await message.reply_photo(
