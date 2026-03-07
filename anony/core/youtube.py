@@ -10,6 +10,7 @@ import random
 import asyncio
 import aiohttp
 from pathlib import Path
+from anony import LOGGER
 
 from py_yt import Playlist, VideosSearch
 
