@@ -113,7 +113,11 @@ async def _controls(_, query: types.CallbackQuery):
 
     try:
         if action in ["skip", "replay", "stop"]:
-            await query.message.reply_text(reply, quote=False)
+            await query.message.reply_text(
+                reply,
+                quote=False,
+                reply_markup=buttons.play_queued(chat_id, query.lang),
+            )
             await query.message.delete()
         else:
             mtext = re.sub(
