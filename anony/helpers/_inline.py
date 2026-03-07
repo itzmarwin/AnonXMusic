@@ -96,7 +96,7 @@ class Inline:
     def play_queued(
         self, chat_id: int, _lang: dict = None
     ) -> types.InlineKeyboardMarkup:
-        _add_text = _lang["add_me"] if _lang else "Add Me"
+        _add_text = _lang["add_me_short"] if _lang else "Add Me"
         _close_text = _lang["close"] if _lang else "Close"
         return self.ikm(
             [
