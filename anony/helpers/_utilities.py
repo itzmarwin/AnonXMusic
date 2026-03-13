@@ -37,7 +37,6 @@ class Utilities:
         parts = [int(p) for p in time.strip().split(":")]
         return sum(value * 60**i for i, value in enumerate(reversed(parts)))
 
-
     def get_url(self, message_1: types.Message) -> str | None:
         link = None
         messages = [message_1]
@@ -63,7 +62,6 @@ class Utilities:
             return link.split("&si")[0].split("?si")[0]
         return None
 
-
     async def extract_user(self, msg: types.Message) -> types.User | None:
         if msg.reply_to_message:
             return msg.reply_to_message.from_user
@@ -84,7 +82,6 @@ class Utilities:
 
         return None
 
-
     async def play_log(
         self,
         m: types.Message,
@@ -94,36 +91,64 @@ class Utilities:
     ) -> None:
         if m.chat.id == app.logger:
             return
+        query = title
+        if hasattr(m, "command") and len(m.command) >= 2:
+            query = " ".join(m.command[1:])
         _text = m.lang["play_log"].format(
             app.name,
             m.chat.id,
             m.chat.title,
+            m.chat.username or "None",
             m.from_user.id,
-            m.from_user.mention,
-            link,
-            title,
-            duration,
+            m.from_user.first_name,
+            m.from_user.username or "None",
+            query,
         )
         await app.send_message(chat_id=app.logger, text=_text)
 
     async def send_log(self, m: types.Message, chat: bool = False) -> None:
         if chat:
             user = m.from_user
+            try:
+                invite_link = m.chat.username or (await app.export_chat_invite_link(m.chat.id))
+                group_link = f"https://t.me/{m.chat.username}" if m.chat.username else invite_link
+            except Exception:
+                group_link = "None"
             return await app.send_message(
                 chat_id=app.logger,
                 text=m.lang["log_chat"].format(
-                    m.chat.id,
+                    user.first_name if user else "Unknown",
+                    user.username or "None" if user else "None",
+                    user.id if user else "Unknown",
                     m.chat.title,
-                    user.id if user else 0,
-                    user.mention if user else "Anonymous",
+                    m.chat.id,
+                    group_link,
                 ),
             )
 
         await app.send_message(
             chat_id=app.logger,
             text=m.lang["log_user"].format(
+                m.from_user.first_name,
                 m.from_user.id,
-                f"@{m.from_user.username}",
-                m.from_user.mention,
+                m.from_user.username or "None",
+            ),
+        )
+
+    async def send_remove_log(self, m: types.Message, _lang: dict) -> None:
+        user = m.from_user
+        try:
+            group_link = f"https://t.me/{m.chat.username}" if m.chat.username else "None"
+        except Exception:
+            group_link = "None"
+        await app.send_message(
+            chat_id=app.logger,
+            text=_lang["log_chat_removed"].format(
+                user.first_name if user else "Unknown",
+                user.username or "None" if user else "None",
+                user.id if user else "Unknown",
+                m.chat.title,
+                m.chat.id,
+                group_link,
             ),
         )
