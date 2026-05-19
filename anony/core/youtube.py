@@ -7,7 +7,6 @@ import os
 import re
 import asyncio
 import aiohttp
-import aiofiles
 import random
 import yt_dlp
 from pathlib import Path, PurePosixPath
@@ -61,10 +60,10 @@ class NexGenApi:
                 if not file_name:
                     file_name = safe_vid_id + (".mp4" if video else ".mp3")
                 fname = f"downloads/{file_name}"
-                async with aiofiles.open(fname, "wb") as f:
+                with open(fname, "wb") as f:
                     async for chunk in resp.content.iter_chunked(self.chunk_limit):
                         if chunk:
-                            await f.write(chunk)
+                            f.write(chunk)
                 if video:
                     self.v_cache[vid_id] = fname
                 else:
