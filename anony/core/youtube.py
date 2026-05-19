@@ -62,7 +62,7 @@ class YouTube:
             return url.split("v=")[-1].split("&")[0]
         if "youtu.be/" in url:
             return url.split("youtu.be/")[-1].split("?")[0]
-        return url  # already a raw video ID
+        return url  
 
     async def search(self, query: str, m_id: int, video: bool = False) -> Track | None:
         try:
@@ -120,7 +120,7 @@ class YouTube:
 
         try:
             async with aiohttp.ClientSession() as session:
-                # Step 1: Request download token
+                
                 async with session.get(
                     f"{api_url}/download",
                     params={"url": video_id, "type": media_type},
@@ -135,7 +135,7 @@ class YouTube:
                         logger.warning("API returned no download_token.")
                         return None
 
-                # Step 2: Stream file using token
+                
                 stream_url = f"{api_url}/stream/{video_id}?type={media_type}"
                 timeout = aiohttp.ClientTimeout(total=600 if video else 300)
                 async with session.get(
@@ -157,7 +157,7 @@ class YouTube:
         except Exception as ex:
             logger.warning(f"API download failed for {video_id}: {ex}")
 
-        # Clean up partial file if exists
+        
         if Path(file_path).exists():
             try:
                 os.remove(file_path)
@@ -166,8 +166,5 @@ class YouTube:
         return None
 
     async def download(self, video_id: str, video: bool = False) -> str | None:
-        """
-        Main download entry point.
-        Tries API first; returns file path or None on failure.
-        """
+        
         return await self._api_download(video_id, video=video)
