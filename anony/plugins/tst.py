@@ -1,6 +1,5 @@
-from pyrogram import filters
-from pyrogram import Client as AnonXMusic
-from pyrogram.types import Message
+from pyrogram import filters, types
+from anony import app
 
 MANAGEMENT_BOT = "StickerKangBot"
 
@@ -10,7 +9,7 @@ TAG_MSG = "For tagging members, add @StickerKangBot to your group."
 ANTIPROMO_MSG = "For anti-promotion settings, add @StickerKangBot to your group."
 
 
-async def management_bot_present(client: AnonXMusic, chat_id: int) -> bool:
+async def management_bot_present(client, chat_id: int) -> bool:
     try:
         member = await client.get_chat_member(chat_id, MANAGEMENT_BOT)
         if member:
@@ -20,33 +19,33 @@ async def management_bot_present(client: AnonXMusic, chat_id: int) -> bool:
     return False
 
 
-@AnonXMusic.on_message(filters.command(["welcome", "setwelcome"], prefixes="/"))
-async def welcome_cmd(client: AnonXMusic, message: Message):
-    if message.chat.type in ["group", "supergroup"]:
-        if await management_bot_present(client, message.chat.id):
+@app.on_message(filters.command(["welcome", "setwelcome"]) & ~app.bl_users)
+async def welcome_cmd(client, m: types.Message):
+    if m.chat.type in ["group", "supergroup"]:
+        if await management_bot_present(client, m.chat.id):
             return
-    await message.reply_text(WELCOME_MSG)
+    await m.reply_text(WELCOME_MSG)
 
 
-@AnonXMusic.on_message(filters.command(["filter"], prefixes="/"))
-async def filter_cmd(client: AnonXMusic, message: Message):
-    if message.chat.type in ["group", "supergroup"]:
-        if await management_bot_present(client, message.chat.id):
+@app.on_message(filters.command(["filter"]) & ~app.bl_users)
+async def filter_cmd(client, m: types.Message):
+    if m.chat.type in ["group", "supergroup"]:
+        if await management_bot_present(client, m.chat.id):
             return
-    await message.reply_text(FILTER_MSG)
+    await m.reply_text(FILTER_MSG)
 
 
-@AnonXMusic.on_message(filters.command(["all", "tagall", "call"], prefixes="/"))
-async def tag_cmd(client: AnonXMusic, message: Message):
-    if message.chat.type in ["group", "supergroup"]:
-        if await management_bot_present(client, message.chat.id):
+@app.on_message(filters.command(["all", "tagall", "call"]) & ~app.bl_users)
+async def tag_cmd(client, m: types.Message):
+    if m.chat.type in ["group", "supergroup"]:
+        if await management_bot_present(client, m.chat.id):
             return
-    await message.reply_text(TAG_MSG)
+    await m.reply_text(TAG_MSG)
 
 
-@AnonXMusic.on_message(filters.command(["antipromo"], prefixes="/"))
-async def antipromo_cmd(client: AnonXMusic, message: Message):
-    if message.chat.type in ["group", "supergroup"]:
-        if await management_bot_present(client, message.chat.id):
+@app.on_message(filters.command(["antipromo"]) & ~app.bl_users)
+async def antipromo_cmd(client, m: types.Message):
+    if m.chat.type in ["group", "supergroup"]:
+        if await management_bot_present(client, m.chat.id):
             return
-    await message.reply_text(ANTIPROMO_MSG)
+    await m.reply_text(ANTIPROMO_MSG)
