@@ -5,6 +5,7 @@
 import traceback
 
 from pyrogram import enums
+from pyrogram.handlers import GuestMessageHandler
 from pyrogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -22,7 +23,6 @@ GUEST_PROMO_TEXT = (
 )
 
 
-@app.on_guest_message()
 async def _guest_promo(_, m):
     try:
         print("=" * 50)
@@ -56,3 +56,7 @@ async def _guest_promo(_, m):
     except Exception:
         print("Guest handler error:")
         traceback.print_exc()
+
+
+# Register handler manually
+app.add_handler(GuestMessageHandler(_guest_promo))
