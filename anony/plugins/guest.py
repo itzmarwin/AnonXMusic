@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 # This file is part of AnonXMusic
 
+import traceback
 
 from pyrogram import enums
 from pyrogram.types import (
@@ -23,23 +24,35 @@ GUEST_PROMO_TEXT = (
 
 @app.on_guest_message()
 async def _guest_promo(_, m):
-    await app.answer_guest_query(
-        m.guest_query_id,
-        result=InlineQueryResultArticle(
-            title="Add me to your Group!",
-            input_message_content=InputTextMessageContent(
-                GUEST_PROMO_TEXT,
-                parse_mode=enums.ParseMode.HTML,
-            ),
-            reply_markup=InlineKeyboardMarkup(
-                [
+    try:
+        print("=" * 50)
+        print("Guest message received!")
+        print(f"Guest Query ID: {m.guest_query_id}")
+        print(m)
+
+        await app.answer_guest_query(
+            m.guest_query_id,
+            result=InlineQueryResultArticle(
+                title="Add me to your Group!",
+                input_message_content=InputTextMessageContent(
+                    GUEST_PROMO_TEXT,
+                    parse_mode=enums.ParseMode.HTML,
+                ),
+                reply_markup=InlineKeyboardMarkup(
                     [
-                        InlineKeyboardButton(
-                            text="➕ Add me in Your Group",
-                            url=f"https://t.me/{app.username}?startgroup=true",
-                        )
+                        [
+                            InlineKeyboardButton(
+                                text="➕ Add me in Your Group",
+                                url=f"https://t.me/{app.username}?startgroup=true",
+                            )
+                        ]
                     ]
-                ]
+                ),
             ),
-        ),
-    )
+        )
+
+        print("Guest query answered successfully!")
+
+    except Exception:
+        print("Guest handler error:")
+        traceback.print_exc()
