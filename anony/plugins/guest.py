@@ -1,0 +1,45 @@
+# Copyright (c) 2025 AnonymousX1025
+# Licensed under the MIT License.
+# This file is part of AnonXMusic
+
+
+from pyrogram import enums
+from pyrogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InlineQueryResultArticle,
+    InputTextMessageContent,
+)
+
+from anony import app
+
+
+GUEST_PROMO_TEXT = (
+    "<b>သင့် Group အတွက် အကောင်းဆုံး Music Bot</b>\n\n"
+    "Ads မရှိ • Promotion မရှိ • အရည်အသွေးမြင့် Music\n\n"
+    f"@{app.username} ကို Add လုပ်ပါ။"
+)
+
+
+@app.on_guest_message()
+async def _guest_promo(_, m):
+    await app.answer_guest_query(
+        m.guest_query_id,
+        result=InlineQueryResultArticle(
+            title="Add me to your Group!",
+            input_message_content=InputTextMessageContent(
+                GUEST_PROMO_TEXT,
+                parse_mode=enums.ParseMode.HTML,
+            ),
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="➕ Add me in Your Group",
+                            url=f"https://t.me/{app.username}?startgroup=true",
+                        )
+                    ]
+                ]
+            ),
+        ),
+    )
