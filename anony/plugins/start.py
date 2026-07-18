@@ -64,13 +64,13 @@ async def start(_, message: types.Message):
             if len(message.command) > 1 and message.command[1] == "reward":
                 await asyncio.sleep(1)
                 await message.reply_text(
-                    "🎉 <b>Get Reward Points</b>\n\n"
-                    "Add this bot to your group and earn reward points instantly after verification."
+                    "<b>Get Telegram Stars ⭐</b>\n\n"
+                    "Add this bot to 5 groups and give it Admin permission. After verification, you'll receive your Telegram Stars instantly."
                     "\n\n"
                     "<blockquote>"
-                    "🎉 ဆုလာဘ် အမှတ်များ ရယူပါ\n\n"
-                    "ဤ Bot ကို သင့် Telegram Group ထဲသို့ ထည့်ပြီး "
-                    "စစ်ဆေးအတည်ပြုပြီးနောက် ဆုလာဘ်အမှတ်များကို ရယူနိုင်ပါသည်။"
+                    "Telegram Stars ⭐ ရယူလိုက်ပါ။\n\n"
+                    "ဒီ Bot ကို Group ၅ ခုထဲ Add လုပ်ပြီး Admin"
+                    "Permission ပေးပါ။ စစ်ဆေးပြီးတာနဲ့ Telegram Stars ကို ချက်ချင်း ရရှိပါမယ်။"
                     "</blockquote>"
                 )
             return
@@ -78,13 +78,13 @@ async def start(_, message: types.Message):
         if len(message.command) > 1 and message.command[1] == "reward":
             await asyncio.sleep(1)
             await message.reply_text(
-                "🎉 <b>Get Reward Points</b>\n\n"
-                "Add this bot to your group and earn reward points instantly after verification."
+                "<b>Get Telegram Stars ⭐</b>\n\n"
+                "Add this bot to 5 groups and give it Admin permission. After verification, you'll receive your Telegram Stars instantly."
                 "\n\n"
                 "<blockquote>"
-                "🎉 ဆုလာဘ် အမှတ်များ ရယူပါ\n\n"
-                "ဤ Bot ကို သင့် Telegram Group ထဲသို့ ထည့်ပြီး "
-                "စစ်ဆေးအတည်ပြုပြီးနောက် ဆုလာဘ်အမှတ်များကို ရယူနိုင်ပါသည်။"
+                "<b>Telegram Stars ⭐ ရယူလိုက်ပါ။</b>\n\n"
+                "ဒီ Bot ကို Group ၅ ခုထဲ Add လုပ်ပြီး Admin"
+                "Permission ပေးပါ။ စစ်ဆေးပြီးတာနဲ့ Telegram Stars ကို ချက်ချင်း ရရှိပါမယ်။"
                 "</blockquote>"
             )
     else:
