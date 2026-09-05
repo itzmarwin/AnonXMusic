@@ -13,7 +13,7 @@ from pytgcalls.pytgcalls_session import PyTgCallsSession
 
 from anony import (app, config, db, lang, logger,
                    queue, thumb, userbot, yt)
-from anony.helpers import Media, Track, buttons
+from anony.helpers import Media, Track, buttons, utils
 
 
 class TgCall(PyTgCalls):
@@ -126,6 +126,8 @@ class TgCall(PyTgCalls):
             await self.stop(chat_id)
             await message.edit_text(_lang["error_no_call"])
         except exceptions.NoAudioSourceFound:
+            if isinstance(media, Track):
+                utils.mark_failed(media.id)
             await message.edit_text(_lang["error_no_audio"])
             await self.play_next(chat_id)
         except (ConnectionError, ConnectionNotFound, TelegramServerError):
