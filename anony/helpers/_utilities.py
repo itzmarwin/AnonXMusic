@@ -3,6 +3,7 @@
 # This file is part of AnonXMusic
 
 
+import os
 import re
 
 from pyrogram import enums, types
@@ -61,6 +62,19 @@ class Utilities:
         if link:
             return link.split("&si")[0].split("?si")[0]
         return None
+
+    def mark_failed(self, video_id: str) -> None:
+        file_path = "failed_songs.txt"
+        existing = []
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                existing = f.read().splitlines()
+
+        if video_id in existing:
+            return
+
+        with open(file_path, "a") as f:
+            f.write(f"{video_id}\n")
 
     async def extract_user(self, msg: types.Message) -> types.User | None:
         if msg.reply_to_message:
