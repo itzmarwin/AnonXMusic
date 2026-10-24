@@ -13,7 +13,7 @@ from anony.helpers import Track, utils
 DEVIL_API_URL = os.environ.get("DEVIL_API_URL", "")
 DEVIL_API_KEY = os.environ.get("DEVIL_API_KEY", "")
 
-SHRUTI_API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
+SHRUTI_API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.in")
 SHRUTI_API_KEY = os.environ.get("SHRUTI_API_KEY", "")
 
 DOWNLOAD_DIR = "downloads"
